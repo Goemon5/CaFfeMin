@@ -7,28 +7,31 @@
           v-model="sleep.sleepTime"
           type=number
           name="article-content"
-          placeholder="sleepTime"
+
           min="0"
+          required 
         />
+        <span v-if="errors.sleepTime" class="error">{{ errors.sleepTime }}</span>
       </div>
 
       <div class="inline field">
         <label for="article-category">何時に就寝しましたか？</label>
         
-        <select v-model="sleep.sleepAt">
+        <select v-model="sleep.sleepAt"required>
       <option v-for="time in timeOptions" :key="time" :value="time">
         {{ time }}
       </option>
     </select>
+
       </div>
       <div class="inline field">
         <label for="article-category">睡眠の質</label>
-        <select id="dropdown" v-model="sleep.quality">
+        <select id="dropdown" v-model="sleep.quality"required>
       <option value="1">悪かった</option>
       <option value="2">普通</option>
       <option value="3">快眠</option>
     </select>
-    
+
       </div>
       
       <div class="right-align">
@@ -68,11 +71,16 @@ export default {
         quality: null,
         createdAt: null,
       },
-      timeOptions: this.generateTimeOptions()
+      timeOptions: this.generateTimeOptions(),
+      errors: {
+        sleepTime: null,
+        sleepAt: null,
+        quality: null,
+      },
     };
   },
   computed: {
-    // 計算した結果を変数として利用したいときはここに記述する
+    
   },
 
   methods: {
@@ -94,6 +102,14 @@ export default {
       const formattedMinute = String(minute).padStart(2, '0');
       return `${formattedHour}:${formattedMinute}`;
     },
+    validateFields() {
+  this.errors.sleepTime = this.sleep.sleepTime ? null : "入力してください";
+  this.errors.sleepAt = this.sleep.sleepAt ? null : "入力してください";
+  this.errors.quality = this.sleep.quality ? null : "入力してください";
+
+  return !this.errors.sleepTime && !this.errors.sleepAt && !this.errors.quality;
+},
+
   
     async PostSleep() {
       const now = new Date();
@@ -134,12 +150,9 @@ export default {
         console.log(jsonData);
       } catch (e) {
         console.error(e);
-        console.log("エラー出てまsy");
+        console.log("このエラーはバックエンドとの連携で解消されます");
       }
 
-      console.log("投稿内容:", this.sleep.sleepTime);
-      console.log("カテゴリー:", this.sleep.sleepAt);
-      console.log("カテゴリー:", this.sleep.createdAt);
       return;
     },
   }
