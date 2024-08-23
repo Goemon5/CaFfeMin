@@ -12,11 +12,11 @@ exports.handler = async (event, context) => {
     },
     body: JSON.stringify({ message: "" }),
   };
-  
-  if(event.headers.authorization!=="mtiToken"){
-    response.statusCode=400;
-    response.body=JSON.stringify({
-      message:"ログインしてください",
+
+  if (event.headers.authorization !== "mtiToken") {
+    response.statusCode = 400;
+    response.body = JSON.stringify({
+      message: "ログインしてください",
     });
     return response;
   }

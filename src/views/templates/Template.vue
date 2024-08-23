@@ -12,7 +12,7 @@
 // import something from '@/components/something.vue';
 
 export default {
-  name: 'Template',
+  name: "Template",
 
   components: {
     // 読み込んだコンポーネント名をここに記述する
@@ -20,8 +20,7 @@ export default {
 
   data() {
     // Vue.jsで使う変数はここに記述する
-    return {
-    };
+    return {};
   },
 
   computed: {
@@ -31,7 +30,7 @@ export default {
   methods: {
     // Vue.jsで使う関数はここで記述する
   },
-}
+};
 </script>
 
 <style scoped>

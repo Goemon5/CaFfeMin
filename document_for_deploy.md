@@ -46,4 +46,3 @@ chmod 755 ./utils.sh
 ```bash
 ./utils.sh s3_update
 ```
-

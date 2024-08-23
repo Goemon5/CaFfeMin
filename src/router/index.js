@@ -1,51 +1,51 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from "../views/Login.vue"
-import Profile from "../views/Profile.vue"
-import User from "../views/User.vue"
+import { createRouter, createWebHashHistory } from "vue-router";
+import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
+import Profile from "../views/Profile.vue";
+import User from "../views/User.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'Home',
+      path: "/",
+      name: "Home",
       component: Home,
       meta: {
-        title: 'Home'
-      }
+        title: "Home",
+      },
     },
     {
-      path:"/login",
-      name:"Login",
+      path: "/login",
+      name: "Login",
       component: Login,
-      meta:{
-        title:"Login"
-      }
+      meta: {
+        title: "Login",
+      },
     },
     {
-      path:"/profile",
-      name:"Profile",
+      path: "/profile",
+      name: "Profile",
       component: Profile,
-      meta:{
-        title:"Profile"
-      }
+      meta: {
+        title: "Profile",
+      },
     },
     {
-      path:"/user",
-      name:"User",
+      path: "/user",
+      name: "User",
       component: User,
-      meta:{
-        title:"User"
-      }
-    }
-  ]
-})
+      meta: {
+        title: "User",
+      },
+    },
+  ],
+});
 
-const DEFAULT_TITLE = 'TITLE';
+const DEFAULT_TITLE = "TITLE";
 
 router.afterEach((to) => {
-  document.title = to.meta.title ?? DEFAULT_TITLE
-})
+  document.title = to.meta.title ?? DEFAULT_TITLE;
+});
 
-export default router
+export default router;

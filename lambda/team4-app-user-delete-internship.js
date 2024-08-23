@@ -16,19 +16,20 @@ exports.handler = async (event, context) => {
   };
 
   const userId = event.queryStringParameters?.userId;
-  
-  if(!userId){
-    response.statusCode=400;
-    response.body=JSON.stringify({
-      message:"無効なリクエストです。request bodyに必須パラメータがセットされていません。",
+
+  if (!userId) {
+    response.statusCode = 400;
+    response.body = JSON.stringify({
+      message:
+        "無効なリクエストです。request bodyに必須パラメータがセットされていません。",
     });
     return response;
   }
-  
-  if(event.headers.authorization!=="mtiToken"){
-    response.statusCode=400;
-    response.body=JSON.stringify({
-      message:"ログインしてください",
+
+  if (event.headers.authorization !== "mtiToken") {
+    response.statusCode = 400;
+    response.body = JSON.stringify({
+      message: "ログインしてください",
     });
     return response;
   }
@@ -36,9 +37,9 @@ exports.handler = async (event, context) => {
   // TODO: 削除対象のテーブル名と削除したいデータのkeyをparamに設定
   const param = {
     TableName,
-    Key:marshall({
+    Key: marshall({
       userId,
-    })
+    }),
   };
 
   // データを削除するコマンドを用意
@@ -48,7 +49,7 @@ exports.handler = async (event, context) => {
     // client.send()を用いてデータを削除するコマンドを実行
     await client.send(command);
     // TODO: 成功後の処理を記載(status codeを指定する。)
-    response.statusCode=204;
+    response.statusCode = 204;
   } catch (e) {
     console.error(e);
     response.statusCode = 500;
