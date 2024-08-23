@@ -3,6 +3,7 @@
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
       <div class="ui segment">
+        <InputSleep />
       </div>
     </div>
   </div>
@@ -11,16 +12,17 @@
 <script>
 // 必要なものはここでインポートする
 // @は/srcと同じ意味です
-// import something from '@/components/something.vue';
+import InputSleep from "@/components/InputSleep.vue";
 // import { baseUrl } from '@/assets/config.js';
 
 // const headers = {'Authorization' : 'mtiToken'};
 
 export default {
-  name: 'Home',
+  name: "Home",
 
   components: {
-   // 読み込んだコンポーネント名をここに記述する
+    InputSleep,
+    // 読み込んだコンポーネント名をここに記述する
   },
 
   data() {
@@ -41,13 +43,13 @@ export default {
     };
   },
   computed: {
-  // 計算した結果を変数として利用したいときはここに記述する
+    // 計算した結果を変数として利用したいときはここに記述する
   },
 
-  created: async function() {
+  created: async function () {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
-    if (!window.localStorage.getItem("token")){
-      this.$router.push({name:"Login"})
+    if (!window.localStorage.getItem("token")) {
+      this.$router.push({ name: "Login" });
     }
     // apiからarticleを取得する
   },
@@ -60,9 +62,8 @@ export default {
     // async getSearchedArticles() {}, // 記事を検索する
     // async deleteArticle(article) {}, // 記事を削除する
     // convertToLocaleString(timestamp) {} // timestampをLocaleDateStringに変換する
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

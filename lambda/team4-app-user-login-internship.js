@@ -13,11 +13,12 @@ exports.handler = async (event, context) => {
   };
 
   // TODO: リクエストボディの中身をJavaScriptオブジェクトに変換し、1つ、あるいは複数の変数に代入する
-  const body=event.body ? JSON.parse(event.body):null;
-  if(!body||!body.userId||!body.password){
-    response.statusCode=400;
-    response.body=JSON.stringify({
-      message:"無効なリクエストです。request bodyに必須パラメータがセットされていません。",
+  const body = event.body ? JSON.parse(event.body) : null;
+  if (!body || !body.userId || !body.password) {
+    response.statusCode = 400;
+    response.body = JSON.stringify({
+      message:
+        "無効なリクエストです。request bodyに必須パラメータがセットされていません。",
     });
     return response;
   }
@@ -31,8 +32,8 @@ exports.handler = async (event, context) => {
     FilterExpression: "password=:pkey",
     //検索値のプレースホルダの定義
     ExpressionAttributeValues: marshall({
-      ":uid":body.userId,
-      ":pkey":body.password,
+      ":uid": body.userId,
+      ":pkey": body.password,
     }),
   };
 
@@ -43,17 +44,17 @@ exports.handler = async (event, context) => {
     const res = await client.send(command);
 
     //TODO: 該当するデータが見つからない場合の処理を記述(ヒント：resの中には個数のプロパティが入っています。)
-    const foundCount=res.Count;
-    if(foundCount==0){
+    const foundCount = res.Count;
+    if (foundCount == 0) {
       throw new Error("userIdまたはpasswordが一致しません");
     }
-    response.body=JSON.stringify({token:"mtiToken"});
+    response.body = JSON.stringify({ token: "mtiToken" });
     //TODO: 認証が成功した場合のレスポンスボディを設定する。
   } catch (e) {
-    if(e.message=="userIdまたはpasswordが一致しません"){
-      response.statusCode=401;
-      response.body=JSON.stringify({message:e.message});
-    }else{
+    if (e.message == "userIdまたはpasswordが一致しません") {
+      response.statusCode = 401;
+      response.body = JSON.stringify({ message: e.message });
+    } else {
       response.statusCode = 500;
       response.body = JSON.stringify({
         message: "予期せぬエラーが発生しました。",

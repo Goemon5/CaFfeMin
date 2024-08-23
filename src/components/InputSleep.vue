@@ -1,0 +1,151 @@
+<template>
+  <div class="ui segment">
+    <form class="ui form" @submit.prevent="PostSleep">
+      <div class="inline field">
+        <label for="article-category">何時間寝ることができましたか？</label>
+        <input
+          v-model="sleep.sleepTime"
+          type=number
+          name="article-content"
+          placeholder="sleepTime"
+          min="0"
+        />
+      </div>
+
+      <div class="inline field">
+        <label for="article-category">何時に就寝しましたか？</label>
+        
+        <select v-model="sleep.sleepAt">
+      <option v-for="time in timeOptions" :key="time" :value="time">
+        {{ time }}
+      </option>
+    </select>
+      </div>
+      <div class="inline field">
+        <label for="article-category">睡眠の質</label>
+        <select id="dropdown" v-model="sleep.quality">
+      <option value="1">悪かった</option>
+      <option value="2">普通</option>
+      <option value="3">快眠</option>
+    </select>
+    
+      </div>
+      
+      <div class="right-align">
+        <button
+          class="ui green button"
+          v-bind:disabled="isPostButtonDisabled"
+          type="submit"
+        >
+          投稿
+        </button>
+        
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+// 必要なものはここでインポートする
+// @は/srcの同じ意味です
+// import something from '@/components/something.vue';
+import { baseUrl } from "@/assets/config.js";
+export default {
+  name: "InputSleep",
+  data() {
+    // Vue.jsで使う変数はここに記述する
+    return {
+      user: {
+        userId: window.localStorage.getItem("userId"),
+        password: null,
+        nickname: null,
+        age: null,
+      },
+
+      sleep: {
+        sleepTime: null,
+        sleepAt: null,
+        quality: null,
+        createdAt: null,
+      },
+      timeOptions: this.generateTimeOptions()
+    };
+  },
+  computed: {
+    // 計算した結果を変数として利用したいときはここに記述する
+  },
+
+  methods: {
+    // Vue.jsで使う関数はここで記述する
+    // isMyArticle(id) {}, // 自分の記事かどうかを判定する
+    // async getArticles() {}, // 記事一覧を取得する
+    generateTimeOptions() {
+      const options = [];
+      for (let hour = 0; hour < 24; hour++) {
+        for (let minute = 0; minute < 60; minute += 10) {
+          const formattedTime = this.formatTime(hour, minute);
+          options.push(formattedTime);
+        }
+      }
+      return options;
+    },
+    formatTime(hour, minute) {
+      const formattedHour = String(hour).padStart(2, '0');
+      const formattedMinute = String(minute).padStart(2, '0');
+      return `${formattedHour}:${formattedMinute}`;
+    },
+  
+    async PostSleep() {
+      const now = new Date();
+
+      this.sleep.sleepAt = Math.floor(now.getTime() / 1000);
+      const headers = { Authorization: "mtiToken" };
+      const reqBody = {
+        userId: this.user.userId,
+        sleepTime: this.sleep.sleepTime,
+        sleepAt: this.sleep.sleepAt,
+        quality: this.sleep.quality,
+        
+      };
+
+      try {
+        console.log(reqBody);
+
+        /*
+          const res = await fetch(baseUrl + "/article", {
+            method: "POST",
+            body: JSON.stringify(reqBody),
+       
+  
+          });*/
+
+        const text = await res.text();
+        const jsonData = text ? JSON.parse(text) : {};
+
+        // fetchではネットワークエラー以外のエラーはthrowされないため、明示的にthrowする
+        if (!res.ok) {
+          const errorMessage =
+            jsonData.message ?? "エラーメッセージがありません";
+          throw new Error(errorMessage);
+        }
+
+        this.$router.push({ name: "Home" });
+        // 成功時の処理
+        console.log(jsonData);
+      } catch (e) {
+        console.error(e);
+        console.log("エラー出てまsy");
+      }
+
+      console.log("投稿内容:", this.sleep.sleepTime);
+      console.log("カテゴリー:", this.sleep.sleepAt);
+      console.log("カテゴリー:", this.sleep.createdAt);
+      return;
+    },
+  }
+};
+</script>
+
+<style scoped>
+/* このコンポーネントだけに適用するCSSはここに記述する */
+</style>

@@ -13,20 +13,27 @@ exports.handler = async (event, context) => {
   };
 
   // TODO: リクエストボディの中身をJavaScriptオブジェクトに変換し、1つ、あるいは複数の変数に代入する
-  const body=event.body?JSON.parse(event.body):null;
-  if(!body||!body.userId||!body.age||!body.nickname||!body.password){
-    response.statusCode=400;
-    response.body=JSON.stringify({
-      message:"無効なリクエストです。request bodyに必須パラメータがセットされていません。",
+  const body = event.body ? JSON.parse(event.body) : null;
+  if (!body || !body.userId || !body.age || !body.nickname || !body.password) {
+    response.statusCode = 400;
+    response.body = JSON.stringify({
+      message:
+        "無効なリクエストです。request bodyに必須パラメータがセットされていません。",
     });
     return response;
-  };
-  const {userId,password,nickname,age}=body;
+  }
+  const { userId, password, nickname, age } = body;
 
   // TODO: DBに登録するための情報をparamオブジェクトとして宣言する（中身を記述）
-  const param = {"TableName":"User","Item":marshall({
-    userId,password,nickname,age
-  })};
+  const param = {
+    TableName: "User",
+    Item: marshall({
+      userId,
+      password,
+      nickname,
+      age,
+    }),
+  };
 
   // DBにデータを登録するコマンドを用意
   const command = new PutItemCommand(param);
@@ -35,8 +42,8 @@ exports.handler = async (event, context) => {
     // client.send()でDBにデータを登録するコマンドを実行
     await client.send(command);
     // TODO: 登録に成功した場合の処理を記載する。(status codeの設定と、response bodyの設定)
-    response.statusCode=201
-    response.body=JSON.stringify({userId,age,nickname})
+    response.statusCode = 201;
+    response.body = JSON.stringify({ userId, age, nickname });
   } catch (e) {
     console.error(e);
     response.statusCode = 500;

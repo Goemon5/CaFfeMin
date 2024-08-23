@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
 
   //レスポンスボディにJSON形式の文字列を代入
   response.body = JSON.stringify({ message: "Hello World!" });
-  
+
   // レスポンスを返す
   return response;
 };
