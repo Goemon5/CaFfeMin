@@ -10,9 +10,7 @@
           min="0"
           required
         />
-        <span v-if="errors.sleepTime" class="error">{{
-          errors.sleepTime
-        }}</span>
+
       </div>
 
       <div class="inline field">
@@ -62,7 +60,6 @@ export default {
         nickname: null,
         age: null,
       },
-
       sleep: {
         sleepTime: null,
         sleepAt: null,
@@ -98,6 +95,7 @@ export default {
       const formattedMinute = String(minute).padStart(2, "0");
       return `${formattedHour}:${formattedMinute}`;
     },
+
     validateFields() {
       this.errors.sleepTime = this.sleep.sleepTime ? null : "入力してください";
       this.errors.sleepAt = this.sleep.sleepAt ? null : "入力してください";
@@ -108,28 +106,31 @@ export default {
       );
     },
 
-    async PostSleep() {
-      const now = new Date();
 
-      this.sleep.sleepAt = Math.floor(now.getTime() / 1000);
-      const headers = { Authorization: "mtiToken" };
+    async PostSleep() {
+      const [hour, minute] = this.sleep.sleepAt.split(":").map(Number);
+      const now = new Date();
+      now.setHours(hour);
+      now.setMinutes(minute);
+      now.setSeconds(0);
+
+      // Dateオブジェクトをタイムスタンプに変換する
+      const sleepAtTimestamp = Math.floor(now.getTime() / 1000);
+
       const reqBody = {
         userId: this.user.userId,
         sleepTime: this.sleep.sleepTime,
-        sleepAt: this.sleep.sleepAt,
-        quality: this.sleep.quality,
+        sleepAt: sleepAtTimestamp, // 変換されたタイムスタンプを使用
+        quarity: this.sleep.quality,
+
       };
 
       try {
         console.log(reqBody);
-
-        /*
-          const res = await fetch(baseUrl + "/article", {
-            method: "POST",
-            body: JSON.stringify(reqBody),
-       
-  
-          });*/
+        const res = await fetch(baseUrl + "/sleep", {
+          method: "POST",
+          body: JSON.stringify(reqBody),
+        });
 
         const text = await res.text();
         const jsonData = text ? JSON.parse(text) : {};

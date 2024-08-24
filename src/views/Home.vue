@@ -2,6 +2,8 @@
   <div>
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
+      <InputSleep />
+      <SleepView />
       <div class="ui segment">
         <form class="ui form" @submit.prevent="postArticle">
           <h3 class="ui dividing header">カフェイン コレクション</h3>
@@ -63,7 +65,11 @@
 <script>
 // 必要なものはここでインポートする
 // @は/srcと同じ意味です
+
 // import something from '@/components/something.vue';
+
+import InputSleep from "@/components/InputSleep.vue";
+import SleepView from "@/components/SleepView.vue";
 import { baseUrl } from "@/assets/config.js";
 
 // const headers = {'Authorization' : 'mtiToken'};
@@ -72,6 +78,10 @@ export default {
   name: "Home",
 
   components: {
+
+    InputSleep,
+    SleepView,
+
     // 読み込んだコンポーネント名をここに記述する
   },
 
@@ -110,10 +120,12 @@ export default {
       selectedOption: "",
       options: [
         { value: "コーヒー", text: "コーヒー" },
+
         { value: "玉露", text: "玉露" },
         { value: "紅茶", text: "紅茶" },
         { value: "せん茶", text: "せん茶" },
         { value: "ほうじ茶", text: "ほうじ茶" },
+
       ],
     };
   },
@@ -121,7 +133,9 @@ export default {
     // 計算した結果を変数として利用したいときはここに記述する
   },
 
+
   created:
+
     // apiからarticleを取得する
     async function () {
       try {
@@ -159,6 +173,7 @@ export default {
   methods: {
     // Vue.jsで使う関数はここで記述する
     // isMyArticle(id) {}, // 自分の記事かどうかを判定する
+
     // 記事一覧を取得する
     formatTimestamps(timestamp) {
       const date = new Date(timestamp);
@@ -168,6 +183,7 @@ export default {
       return `${year}年${month}月${day}日`;
     },
     
+
 
     async postArticle() {
       if (this.isCallingApi) {
@@ -225,8 +241,10 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .bold-text {
   font-weight: bold;
 }
 </style>
+
