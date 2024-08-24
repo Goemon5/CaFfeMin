@@ -28,13 +28,13 @@ exports.handler = async (event, context) => {
   // TODO: DBに登録するための情報をparamオブジェクトとして宣言する（中身を記述）
   const param = {
     TableName,
-    "Item":marshall({
-    userId:{S:userId},
-    sleepTime:{N:sleepTime},
-    sleepAt:{N:sleepAt},
-    quarity:{N:quarity},
-    createdAt:{N:createdAt}
-  })};
+    "Item":{
+      userId:{S:userId},
+      sleepTime:{N:sleepTime.toString()},
+      sleepAt:{N:sleepAt.toString()},
+      quarity:{N:quarity.toString()},
+      createdAt:{N:createdAt.toString()}
+    }};
 
   // DBにデータを登録するコマンドを用意
   const command = new PutItemCommand(param);

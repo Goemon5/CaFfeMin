@@ -75,9 +75,10 @@ exports.handler = async (event, context) => {
   
   param={
     TableName:"Team4Diary",
-    Key:marshall({
-      userId,
-    }),
+    FilterExpression: "userId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": { S: userId },
+    },
   }
   
   command = new ScanCommand(param);
@@ -128,8 +129,11 @@ exports.handler = async (event, context) => {
   response.body?.map((res)=>{
     const responseDate=new Date(res.sleepAt).toISOString().split("T")[0];
     const caffeine=dayCaffeine[responseDate];
-    // console.log(caffeine)
-    res.dayCaffeine=caffeine;
+    if(caffeine){
+      res.dayCaffeine=caffeine; 
+    }else{
+      res.dayCaffeine=0;
+    }
     return res;
   })
   
