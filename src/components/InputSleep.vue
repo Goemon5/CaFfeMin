@@ -5,35 +5,34 @@
         <label for="article-category">何時間寝ることができましたか？</label>
         <input
           v-model="sleep.sleepTime"
-          type=number
+          type="number"
           name="article-content"
-
           min="0"
-          required 
+          required
         />
-        <span v-if="errors.sleepTime" class="error">{{ errors.sleepTime }}</span>
+        <span v-if="errors.sleepTime" class="error">{{
+          errors.sleepTime
+        }}</span>
       </div>
 
       <div class="inline field">
         <label for="article-category">何時に就寝しましたか？</label>
-        
-        <select v-model="sleep.sleepAt"required>
-      <option v-for="time in timeOptions" :key="time" :value="time">
-        {{ time }}
-      </option>
-    </select>
 
+        <select v-model="sleep.sleepAt" required>
+          <option v-for="time in timeOptions" :key="time" :value="time">
+            {{ time }}
+          </option>
+        </select>
       </div>
       <div class="inline field">
         <label for="article-category">睡眠の質</label>
-        <select id="dropdown" v-model="sleep.quality"required>
-      <option value="1">悪かった</option>
-      <option value="2">普通</option>
-      <option value="3">快眠</option>
-    </select>
-
+        <select id="dropdown" v-model="sleep.quality" required>
+          <option value="1">悪かった</option>
+          <option value="2">普通</option>
+          <option value="3">快眠</option>
+        </select>
       </div>
-      
+
       <div class="right-align">
         <button
           class="ui green button"
@@ -42,7 +41,6 @@
         >
           投稿
         </button>
-        
       </div>
     </form>
   </div>
@@ -79,9 +77,7 @@ export default {
       },
     };
   },
-  computed: {
-    
-  },
+  computed: {},
 
   methods: {
     // Vue.jsで使う関数はここで記述する
@@ -98,19 +94,20 @@ export default {
       return options;
     },
     formatTime(hour, minute) {
-      const formattedHour = String(hour).padStart(2, '0');
-      const formattedMinute = String(minute).padStart(2, '0');
+      const formattedHour = String(hour).padStart(2, "0");
+      const formattedMinute = String(minute).padStart(2, "0");
       return `${formattedHour}:${formattedMinute}`;
     },
     validateFields() {
-  this.errors.sleepTime = this.sleep.sleepTime ? null : "入力してください";
-  this.errors.sleepAt = this.sleep.sleepAt ? null : "入力してください";
-  this.errors.quality = this.sleep.quality ? null : "入力してください";
+      this.errors.sleepTime = this.sleep.sleepTime ? null : "入力してください";
+      this.errors.sleepAt = this.sleep.sleepAt ? null : "入力してください";
+      this.errors.quality = this.sleep.quality ? null : "入力してください";
 
-  return !this.errors.sleepTime && !this.errors.sleepAt && !this.errors.quality;
-},
+      return (
+        !this.errors.sleepTime && !this.errors.sleepAt && !this.errors.quality
+      );
+    },
 
-  
     async PostSleep() {
       const now = new Date();
 
@@ -121,7 +118,6 @@ export default {
         sleepTime: this.sleep.sleepTime,
         sleepAt: this.sleep.sleepAt,
         quality: this.sleep.quality,
-        
       };
 
       try {
@@ -155,7 +151,7 @@ export default {
 
       return;
     },
-  }
+  },
 };
 </script>
 
