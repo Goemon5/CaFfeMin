@@ -45,35 +45,18 @@
       </div>
 
       <h3 class="ui dividing header">カフェイン コレクション一覧</h3>
-      <div class="ui segment">
-        <ul class="ui comments divided article-list">
-          <template v-for="(diaries, index) in articles" :key="index">
-            <li class="comment">
-              <div class="content">
-                <span class="author">{{ diaries.userId }}</span>
-                <div class="metadata">
-                  <span class="date">{{
-                    convertToLocaleString(article.timestamp)
-                  }}</span>
-                </div>
-                <button
-                  v-if="isMyArticle(article.userId)"
-                  class="ui negative mini button right floated"
-                  @click="deleteArticle(article)"
-                >
-                  削除
-                </button>
-                <p class="text">
-                  {{ article.text }}
-                </p>
-                <span v-if="article.category" class="ui green label">{{
-                  article.category
-                }}</span>
-                <div class="ui divider"></div>
+      <div class="ui three stackable cards">
+        <template v-for="(diaries, index) in diary" :key="index">
+          <div class="card">
+            <div class="content">
+              <div class="header">日時: {{ formatTimestamps(diaries.createdAt) }}</div>
+              <div class="description">
+                <p class="bold-text">カフェイン飲料 : {{ diaries.drinkType }}</p>
+                <p class="bold-text">摂取量 : {{ diaries.drinkAmount }}mL</p>
               </div>
-            </li>
-          </template>
-        </ul>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -82,6 +65,9 @@
 <script>
 // 必要なものはここでインポートする
 // @は/srcと同じ意味です
+
+// import something from '@/components/something.vue';
+
 import InputSleep from "@/components/InputSleep.vue";
 import SleepView from "@/components/SleepView.vue";
 import { baseUrl } from "@/assets/config.js";
@@ -92,8 +78,10 @@ export default {
   name: "Home",
 
   components: {
+
     InputSleep,
     SleepView,
+
     // 読み込んだコンポーネント名をここに記述する
   },
 
@@ -118,14 +106,7 @@ export default {
         nickname: null,
         age: null,
       },
-      diary: {
-        drink: null,
-        drinkType: null,
-        drinkAmount: null,
-        createdAt: null,
-        caffeineAmount: null,
-        userId: null,
-      },
+      diary: [],
       diaries: {
         drinkType: null,
         drinkAmount: null,
@@ -139,8 +120,12 @@ export default {
       selectedOption: "",
       options: [
         { value: "コーヒー", text: "コーヒー" },
-        { value: "エナジードリンク", text: "エナジードリンク" },
+
+        { value: "玉露", text: "玉露" },
         { value: "紅茶", text: "紅茶" },
+        { value: "せん茶", text: "せん茶" },
+        { value: "ほうじ茶", text: "ほうじ茶" },
+
       ],
     };
   },
@@ -148,18 +133,58 @@ export default {
     // 計算した結果を変数として利用したいときはここに記述する
   },
 
-  created: async function () {
-    // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
-    if (!window.localStorage.getItem("token")) {
-      //this.$router.push({name:"Login"})
-    }
+
+  created:
+
     // apiからarticleを取得する
-  },
+    async function () {
+      try {
+        /* global fetch */
+        const res = await fetch(
+          baseUrl + `/diaries?userId=${this.user.userId}`,
+          {
+            method: "GET",
+          },
+        );
+
+        const text = await res.text();
+        const jsonData = text ? JSON.parse(text) : {};
+        // fetchではネットワークエラー以外のエラーはthrowされないため、明示的にthrowする
+        if (!res.ok) {
+          const errorMessage =
+            jsonData.message ?? "エラーメッセージがありません";
+          throw new Error(errorMessage);
+        }
+        if (Array.isArray(jsonData)) {
+          this.diary = jsonData; // 複数のデータを一度に取得する場合
+        } else {
+          this.diary.push(jsonData); // 単一のデータを取得する場合
+        }
+
+        // 成功時の処理
+        //this.users = jsonData.users ?? [];
+        console.log(jsonData);
+      } catch (e) {
+        console.error(e);
+        // エラー時の処理
+      }
+    }, // 記事一覧を取得する
 
   methods: {
     // Vue.jsで使う関数はここで記述する
     // isMyArticle(id) {}, // 自分の記事かどうかを判定する
-    async getArticles() {}, // 記事一覧を取得する
+
+    // 記事一覧を取得する
+    formatTimestamps(timestamp) {
+      const date = new Date(timestamp);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0"); // 月は0から始まるので+1する
+      const day = date.getDate().toString().padStart(2, "0");
+      return `${year}年${month}月${day}日`;
+    },
+    
+
+
     async postArticle() {
       if (this.isCallingApi) {
         return;
@@ -190,10 +215,9 @@ export default {
         }
         console.log(reqBody);
 
-        this.articles.unshift({ ...reqBody, timestamp: Date.now() });
         this.successMsg = "記事が投稿されました！";
-        this.post.text = "";
-        this.post.category = "";
+        this.diary.drinkType = "";
+        this.diary.drinkAmount = "";
       } catch (e) {
         console.error(e);
         this.errorMsg = e;
@@ -217,4 +241,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+
+<style scoped>
+.bold-text {
+  font-weight: bold;
+}
+</style>
+

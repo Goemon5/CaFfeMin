@@ -10,6 +10,7 @@
           min="0"
           required
         />
+
       </div>
 
       <div class="inline field">
@@ -95,6 +96,17 @@ export default {
       return `${formattedHour}:${formattedMinute}`;
     },
 
+    validateFields() {
+      this.errors.sleepTime = this.sleep.sleepTime ? null : "入力してください";
+      this.errors.sleepAt = this.sleep.sleepAt ? null : "入力してください";
+      this.errors.quality = this.sleep.quality ? null : "入力してください";
+
+      return (
+        !this.errors.sleepTime && !this.errors.sleepAt && !this.errors.quality
+      );
+    },
+
+
     async PostSleep() {
       const [hour, minute] = this.sleep.sleepAt.split(":").map(Number);
       const now = new Date();
@@ -110,6 +122,7 @@ export default {
         sleepTime: this.sleep.sleepTime,
         sleepAt: sleepAtTimestamp, // 変換されたタイムスタンプを使用
         quarity: this.sleep.quality,
+
       };
 
       try {
