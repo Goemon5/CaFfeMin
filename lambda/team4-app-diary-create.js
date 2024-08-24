@@ -27,7 +27,7 @@ exports.handler = async (event, context) => {
 
   // リクエストボディの解析
   const body = event.body ? JSON.parse(event.body) : null;
-  if (!body || !body.userId || !body.drinkType || !body.drinkAmount) {
+  if (!body || !body.userId || !body.drinkType || !body.drinkAmount || !body.createdAt) {
     response.statusCode = 400;
     response.body = JSON.stringify({
       message:
@@ -36,11 +36,11 @@ exports.handler = async (event, context) => {
     return response;
   }
 
-  const { userId, drinkType, drinkAmount } = body;
+  const { userId, drinkType, drinkAmount, createdAt } = body;
 
   // カフェイン量を計算
   const caffeineAmount = calculateCaffeine(drinkType, drinkAmount);
-  const createdAt = Date.now();
+  // const createdAt = Date.now();
 
   // DynamoDBに登録するためのパラメータを準備
   const param = {
