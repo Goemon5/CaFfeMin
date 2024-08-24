@@ -2,7 +2,10 @@
   <div>
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
+      <InputSleep />
+      <SleepView />
       <div class="ui segment">
+
         <form class="ui form" @submit.prevent="postArticle">
           <h3 class="ui dividing header">カフェイン コレクション</h3>
           
@@ -75,7 +78,8 @@
 <script>
 // 必要なものはここでインポートする
 // @は/srcと同じ意味です
-// import something from '@/components/something.vue';
+import InputSleep from '@/components/InputSleep.vue';
+import SleepView from '@/components/SleepView.vue';
 import { baseUrl } from '@/assets/config.js';
 
 // const headers = {'Authorization' : 'mtiToken'};
@@ -84,6 +88,8 @@ export default {
   name: 'Home',
 
   components: {
+  InputSleep,
+  SleepView
    // 読み込んだコンポーネント名をここに記述する
   },
 

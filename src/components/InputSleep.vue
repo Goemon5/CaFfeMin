@@ -64,7 +64,6 @@ export default {
         nickname: null,
         age: null,
       },
-
       sleep: {
         sleepTime: null,
         sleepAt: null,
@@ -120,20 +119,18 @@ export default {
         userId: this.user.userId,
         sleepTime: this.sleep.sleepTime,
         sleepAt: this.sleep.sleepAt,
-        quality: this.sleep.quality,
+        quarity: this.sleep.quality,
         
       };
 
       try {
         console.log(reqBody);
-
-        /*
-          const res = await fetch(baseUrl + "/article", {
-            method: "POST",
-            body: JSON.stringify(reqBody),
+        const res = await fetch(baseUrl + "/sleep", {
+          method: "POST",
+          body: JSON.stringify(reqBody),
        
   
-          });*/
+          });
 
         const text = await res.text();
         const jsonData = text ? JSON.parse(text) : {};
