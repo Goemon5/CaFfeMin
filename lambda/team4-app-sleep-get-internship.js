@@ -33,9 +33,10 @@ exports.handler = async (event, context) => {
   //TODO: 取得対象のテーブル名と検索に使うキーをparamに宣言
   let param = {
     TableName:"Team4Sleep",
-    Key:marshall({
-      userId,
-    }),
+    FilterExpression: "userId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": { S: userId },
+    },
   };
 
   // 指定したアイテムを取得するコマンドを用意
