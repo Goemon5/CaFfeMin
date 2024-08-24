@@ -2,8 +2,8 @@
   <div>
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
-      <InputSleep />
-      <SleepView />
+      <LineChart />
+      
       <div class="ui segment">
         <form class="ui form" @submit.prevent="postArticle">
           <h3 class="ui dividing header">カフェイン コレクション</h3>
@@ -43,7 +43,8 @@
           </div>
         </form>
       </div>
-
+<InputSleep />
+      <SleepView />
       <h3 class="ui dividing header">カフェイン コレクション一覧</h3>
       <div class="ui three stackable cards">
         <template v-for="(diaries, index) in diary" :key="index">
@@ -53,6 +54,7 @@
               <div class="description">
                 <p class="bold-text">カフェイン飲料 : {{ diaries.drinkType }}</p>
                 <p class="bold-text">摂取量 : {{ diaries.drinkAmount }}mL</p>
+                <p class="bold-text">カフェイン量 : {{ diaries.caffeineAmount }}mg</p>
               </div>
             </div>
           </div>
@@ -70,6 +72,7 @@
 
 import InputSleep from "@/components/InputSleep.vue";
 import SleepView from "@/components/SleepView.vue";
+import LineChart from "@/components/LineChart.vue";
 import { baseUrl } from "@/assets/config.js";
 
 // const headers = {'Authorization' : 'mtiToken'};
@@ -81,6 +84,7 @@ export default {
 
     InputSleep,
     SleepView,
+    LineChart,
 
     // 読み込んだコンポーネント名をここに記述する
   },
@@ -164,6 +168,7 @@ export default {
         // 成功時の処理
         //this.users = jsonData.users ?? [];
         console.log(jsonData);
+        
       } catch (e) {
         console.error(e);
         // エラー時の処理
