@@ -168,7 +168,7 @@ export default {
         // 成功時の処理
         //this.users = jsonData.users ?? [];
         console.log(jsonData);
-        this.$router.push({ name: "Home" });
+        
       } catch (e) {
         console.error(e);
         // エラー時の処理

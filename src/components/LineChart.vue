@@ -31,7 +31,7 @@ export default {
       chartData: null,
       chartOptions: {
         title: 'caffein',
-        curveType: 'function', // 曲線を滑らかにする
+         // 曲線を滑らかにする
         legend: { position: 'bottom' },
       },
       chartSettings: {
@@ -46,7 +46,7 @@ export default {
       try {
         /* global fetch */
         const res = await fetch(
-          baseUrl + `/graph?userId=caffeinetest`,
+          baseUrl + `/graph?userId=${this.user.userId}`,
           {
             method: "GET",
           },
