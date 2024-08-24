@@ -131,5 +131,9 @@ exports.handler = async (event, context) => {
     caffeineInBloodList.push([timeCount+"時",caffeineInBloodCal(timeCount)])
   }
 
-  return caffeineInBloodList;
+  // return caffeineInBloodList;
+  
+  response.body=JSON.stringify({result:caffeineInBloodList})
+  
+  return response
 };
