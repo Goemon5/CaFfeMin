@@ -5,17 +5,11 @@
       <div class="ui segment">
         <form class="ui form" @submit.prevent="postArticle">
           <h3 class="ui dividing header">カフェイン コレクション</h3>
-          <div class="field">
-            <textarea
-              v-model="diary.drinkType"
-              name="article-content"
-              placeholder="コメント"
-            />
-          </div>
+          
 
           <div>
             <label for="dropdown">カフェイン飲料の種類:</label>
-              <select v-model="selectedOption" id="dropdown" style="width: 50%;">
+              <select v-model="diary.drinkType" id="dropdown" style="width: 50%;">
                 <option v-for="option in options" :key="option.value" :value="option.value">
                   {{ option.text }}
                 </option>
@@ -82,7 +76,7 @@
 // 必要なものはここでインポートする
 // @は/srcと同じ意味です
 // import something from '@/components/something.vue';
-// import { baseUrl } from '@/assets/config.js';
+import { baseUrl } from '@/assets/config.js';
 
 // const headers = {'Authorization' : 'mtiToken'};
 
@@ -108,6 +102,12 @@ export default {
       },
       
       //追加
+      user: {
+        userId: window.localStorage.getItem("userId"),
+        password: null,
+        nickname: null,
+        age: null,
+      },
       diary: {
         drink: null,
         drinkType: null,
@@ -129,9 +129,9 @@ export default {
       
       selectedOption: '',
       options: [
-        { value: 'option1', text: 'コーヒー' },
-        { value: 'option2', text: 'エナジードリンク' },
-        { value: 'option3', text: '紅茶' }
+        { value: 'コーヒー', text: 'コーヒー' },
+        { value: 'エナジードリンク', text: 'エナジードリンク' },
+        { value: '紅茶', text: '紅茶' }
       ]
       
     };
@@ -155,22 +155,24 @@ export default {
     
     }, // 記事一覧を取得する
     async postArticle() {
+      
       if (this.isCallingApi) {
         return;
       }
       this.isCallingApi = true;
 
       const reqBody = {
-        userId: this.iam,
+        userId: this.user.userId,
         drinkType: this.diary.drinkType,
         drinkAmount: this.diary.drinkAmount,
       };
+      console.log(reqBody);
       try {
         /* global fetch */
-        const res = await fetch(baseUrl + "/article", {
+        const res = await fetch(baseUrl + "/diary", {
           method: "POST",
           body: JSON.stringify(reqBody),
-          headers,
+          
         });
 
         const text = await res.text();
@@ -182,6 +184,7 @@ export default {
             jsonData.message ?? "エラーメッセージがありません";
           throw new Error(errorMessage);
         }
+        console.log(reqBody);
 
         this.articles.unshift({ ...reqBody, timestamp: Date.now() });
         this.successMsg = "記事が投稿されました！";
@@ -190,8 +193,7 @@ export default {
       } catch (e) {
         console.error(e);
         this.errorMsg = e;
-      } finally {
-        this.isCallingApi = false;
+
       } 
     }, // 記事を作成する
     // async getSearchedArticles() {}, // 記事を検索する
