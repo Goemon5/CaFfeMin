@@ -5,35 +5,31 @@
         <label for="article-category">何時間寝ることができましたか？</label>
         <input
           v-model="sleep.sleepTime"
-          type=number
+          type="number"
           name="article-content"
-
           min="0"
-          required 
+          required
         />
-        <span v-if="errors.sleepTime" class="error">{{ errors.sleepTime }}</span>
       </div>
 
       <div class="inline field">
         <label for="article-category">何時に就寝しましたか？</label>
-        
-        <select v-model="sleep.sleepAt"required>
-      <option v-for="time in timeOptions" :key="time" :value="time">
-        {{ time }}
-      </option>
-    </select>
 
+        <select v-model="sleep.sleepAt" required>
+          <option v-for="time in timeOptions" :key="time" :value="time">
+            {{ time }}
+          </option>
+        </select>
       </div>
       <div class="inline field">
         <label for="article-category">睡眠の質</label>
-        <select id="dropdown" v-model="sleep.quality"required>
-      <option value="1">悪かった</option>
-      <option value="2">普通</option>
-      <option value="3">快眠</option>
-    </select>
-
+        <select id="dropdown" v-model="sleep.quality" required>
+          <option value="1">悪かった</option>
+          <option value="2">普通</option>
+          <option value="3">快眠</option>
+        </select>
       </div>
-      
+
       <div class="right-align">
         <button
           class="ui green button"
@@ -42,7 +38,6 @@
         >
           投稿
         </button>
-        
       </div>
     </form>
   </div>
@@ -64,7 +59,6 @@ export default {
         nickname: null,
         age: null,
       },
-
       sleep: {
         sleepTime: null,
         sleepAt: null,
@@ -79,9 +73,7 @@ export default {
       },
     };
   },
-  computed: {
-    
-  },
+  computed: {},
 
   methods: {
     // Vue.jsで使う関数はここで記述する
@@ -98,42 +90,34 @@ export default {
       return options;
     },
     formatTime(hour, minute) {
-      const formattedHour = String(hour).padStart(2, '0');
-      const formattedMinute = String(minute).padStart(2, '0');
+      const formattedHour = String(hour).padStart(2, "0");
+      const formattedMinute = String(minute).padStart(2, "0");
       return `${formattedHour}:${formattedMinute}`;
     },
-    validateFields() {
-  this.errors.sleepTime = this.sleep.sleepTime ? null : "入力してください";
-  this.errors.sleepAt = this.sleep.sleepAt ? null : "入力してください";
-  this.errors.quality = this.sleep.quality ? null : "入力してください";
 
-  return !this.errors.sleepTime && !this.errors.sleepAt && !this.errors.quality;
-},
-
-  
     async PostSleep() {
+      const [hour, minute] = this.sleep.sleepAt.split(":").map(Number);
       const now = new Date();
+      now.setHours(hour);
+      now.setMinutes(minute);
+      now.setSeconds(0);
 
-      this.sleep.sleepAt = Math.floor(now.getTime() / 1000);
-      const headers = { Authorization: "mtiToken" };
+      // Dateオブジェクトをタイムスタンプに変換する
+      const sleepAtTimestamp = Math.floor(now.getTime() / 1000);
+
       const reqBody = {
         userId: this.user.userId,
         sleepTime: this.sleep.sleepTime,
-        sleepAt: this.sleep.sleepAt,
-        quality: this.sleep.quality,
-        
+        sleepAt: sleepAtTimestamp, // 変換されたタイムスタンプを使用
+        quarity: this.sleep.quality,
       };
 
       try {
         console.log(reqBody);
-
-        /*
-          const res = await fetch(baseUrl + "/article", {
-            method: "POST",
-            body: JSON.stringify(reqBody),
-       
-  
-          });*/
+        const res = await fetch(baseUrl + "/sleep", {
+          method: "POST",
+          body: JSON.stringify(reqBody),
+        });
 
         const text = await res.text();
         const jsonData = text ? JSON.parse(text) : {};
@@ -155,7 +139,7 @@ export default {
 
       return;
     },
-  }
+  },
 };
 </script>
 

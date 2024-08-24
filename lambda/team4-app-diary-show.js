@@ -29,7 +29,7 @@ exports.handler = async (event, context) => {
       ":userId": { S: userId },
     },
     ScanIndexForward: false, // 降順で取得
-    Limit: 1 // 最新の1件を取得
+    Limit: 1, // 最新の1件を取得
   };
 
   const command = new QueryCommand(params);

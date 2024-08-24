@@ -43,7 +43,7 @@ exports.handler = async (event, context) => {
     }
 
     // 取得したデータをレスポンスボディに設定
-    response.body = JSON.stringify(diaries.map(item => unmarshall(item)));
+    response.body = JSON.stringify(diaries.map((item) => unmarshall(item)));
   } catch (e) {
     if (e.message === "userIdに合致するデータが存在しません。") {
       response.statusCode = 404;
