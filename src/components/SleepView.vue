@@ -1,16 +1,26 @@
 <template>
-  <div v-for="(sleep, index) in sleeps" :key="index">
-  <div class="ui segment">
-    
-      
-        <label for="article-category">睡眠時間: {{ sleep.sleepTime }}</label>
-        <p>就寝時間: {{ formatTimestamp(sleep.sleepAt * 1000) }}</p>
-        <p>睡眠の質: {{ formatQuality(sleep.quarity) }}</p>
-        <p>日時: {{ formatTimestamp(sleep.createdAt * 1000) }}</p>
-      </div>
-      
-      
+  <div class="ui main container">
+    <div class="ui three stackable cards">
+      <template v-for="(sleep, index) in sleeps" :key="index">
+        <div class="card">
+          <div class="content">
+            <div class="header">{{ formatTimestamps(sleep.createdAt) }}</div>
 
+            <div class="description">
+              <p class="bold-text">
+                何時間寝れましたか？:{{ sleep.sleepTime }}時間
+              </p>
+              <p class="bold-text">
+                就寝時間: {{ formatTimestamp(sleep.sleepAt * 1000) }}
+              </p>
+              <p class="bold-text">
+                睡眠の質: {{ formatQuality(sleep.quarity) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -37,7 +47,7 @@ export default {
         quarity: null,
         createdAt: null,
       },
-      sleeps: [], 
+      sleeps: [],
 
       errors: {
         sleepTime: null,
@@ -46,12 +56,9 @@ export default {
       },
     };
   },
-  computed: {
-    
-  },
+  computed: {},
 
   methods: {
-    
     async fetchSleepData() {
       try {
         const res = await fetch(baseUrl + `/sleep?userId=${this.user.userId}`, {
@@ -62,17 +69,17 @@ export default {
         const jsonData = text ? JSON.parse(text) : [];
 
         if (!res.ok) {
-          const errorMessage = jsonData.message ?? "エラーメッセージがありません";
+          const errorMessage =
+            jsonData.message ?? "エラーメッセージがありません";
           throw new Error(errorMessage);
         }
-
+        console.log(jsonData);
         // 新しいデータを配列に追加
         if (Array.isArray(jsonData)) {
           this.sleeps = jsonData; // 複数のデータを一度に取得する場合
         } else {
           this.sleeps.push(jsonData); // 単一のデータを取得する場合
         }
-
       } catch (e) {
         console.error(e);
       }
@@ -82,7 +89,15 @@ export default {
       const hours = date.getHours();
       const minutes = date.getMinutes();
       return `${hours}時${minutes}分`;
-    },formatQuality(quarity) {
+    },
+    formatTimestamps(timestamp) {
+      const date = new Date(timestamp);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0"); // 月は0から始まるので+1する
+      const day = date.getDate().toString().padStart(2, "0");
+      return `${year}年${month}月${day}日`;
+    },
+    formatQuality(quarity) {
       switch (quarity) {
         case 1:
           return "悪かった";
@@ -93,8 +108,7 @@ export default {
         default:
           return "不明";
       }
-    }
-    
+    },
   },
   created: async function () {
     if (!window.localStorage.getItem("token")) {
@@ -103,10 +117,11 @@ export default {
 
     this.fetchSleepData(); // コンポーネント作成時にデータを取得
   },
-   
 };
 </script>
 
 <style scoped>
-/* このコンポーネントだけに適用するCSSはここに記述する */
+.bold-text {
+  font-weight: bold;
+}
 </style>

@@ -5,11 +5,11 @@ const TableName = "Team4Diary";
 // カフェイン量を計算する関数
 function calculateCaffeine(drinkType, drinkAmount) {
   const caffeineContent = {
-    "コーヒー": 0.6,
-    "玉露": 1.6,
-    "紅茶": 0.3,
-    "せん茶": 0.2,
-    "ほうじ茶": 0.2
+    コーヒー: 0.6,
+    玉露: 1.6,
+    紅茶: 0.3,
+    せん茶: 0.2,
+    ほうじ茶: 0.2,
   };
 
   // 飲み物の種類が不明な場合は0を返す
@@ -30,7 +30,8 @@ exports.handler = async (event, context) => {
   if (!body || !body.userId || !body.drinkType || !body.drinkAmount) {
     response.statusCode = 400;
     response.body = JSON.stringify({
-      message: "無効なリクエストです。request bodyに必須パラメータがセットされていません。",
+      message:
+        "無効なリクエストです。request bodyに必須パラメータがセットされていません。",
     });
     return response;
   }
@@ -60,7 +61,13 @@ exports.handler = async (event, context) => {
     await client.send(command);
     // 成功時のレスポンス設定
     response.statusCode = 201;
-    response.body = JSON.stringify({ drinkType, drinkAmount, createdAt, userId, caffeineAmount});
+    response.body = JSON.stringify({
+      drinkType,
+      drinkAmount,
+      createdAt,
+      userId,
+      caffeineAmount,
+    });
   } catch (e) {
     console.error(e);
     response.statusCode = 500;
