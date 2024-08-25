@@ -3,8 +3,8 @@
     <router-link active-class="active" class="item" exact to="/"
       >Home</router-link
     >
-    <router-link active-class="active" class="item" to="/user"
-      >User</router-link
+    <router-link active-class="active" class="item" to="/concierge"
+      >Concierge</router-link
     >
     <router-link active-class="active" class="item" to="/profile"
       >Profile</router-link
