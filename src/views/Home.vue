@@ -115,12 +115,7 @@ export default {
         age: null,
       },
       diary:[],
-      diary:  {
-        drinkType: null,
-        drinkAmount: null,
-        caffeineAmount: null,
-        createdAt: null,
-      },
+      
       diaries: {
         drinkType: null,
         drinkAmount: null,
@@ -211,8 +206,11 @@ generateTimeOptions() {
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, "0"); // 月は0から始まるので+1する
       const day = date.getDate().toString().padStart(2, "0");
-      return `${year}年${month}月${day}日`;
-    },
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      return `${year}年${month}月${day}日 ${hours}時${minutes}分`;
+  },
+
     
 
 
