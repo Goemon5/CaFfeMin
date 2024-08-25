@@ -10,7 +10,7 @@
 
           <div>
             <label for="dropdown">カフェイン飲料の種類:</label>
-            <select v-model="diary.drinkType" id="dropdown" style="width: 50%">
+            <select v-model="diary.drinkType" id="dropdown" style="width: 50%" required>
               <option
                 v-for="option in options"
                 :key="option.value"
@@ -29,6 +29,7 @@
               name="intake"
               placeholder="摂取量(ml)"
               style="width: 50%"
+              min="0"
             />
           </div>
 
