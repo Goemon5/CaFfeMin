@@ -30,9 +30,19 @@ export default {
       
       chartData: null,
       chartOptions: {
-        title: 'caffein',
+        title: 'Caffeine Level Over Time',
          // 曲線を滑らかにする
         legend: { position: 'bottom' },
+        hAxis:{
+          title:"Hour"
+        },
+        vAxis:{
+          title:"Caffeine"
+        },
+        series: {
+          0: { curveType: 'function', color: '#0000FF' },  // カフェインレベルのグラフ
+          1: { type: 'line', color: '#FF0000', lineWidth: 2 }  // 垂直線としてのグラフ
+        }
       },
       chartSettings: {
         packages: ['corechart'],
@@ -64,15 +74,27 @@ export default {
 
         // chartDataを動的に更新
         const result=jsonData.result;
-        result.unshift(['hour', 'caffein']);
-        this.chartData = result;
-        // [['hour', 'caffein'], ...jsonData];
-        console.log(jsonData)
-        // this.chartData=jsonData.result??[]
-
-        // 成功時の処理
-        //this.users = jsonData.users ?? [];
-        console.log(jsonData);
+        // result.unshift(['hour', 'caffeine']);
+        
+        // 既存のコード
+        const verticalLineHour = 23;  // 垂直線を引く時間
+        const maxValue = Math.max(...result.map(item => item[1]));
+        
+        // グラフのデータ形式を整える
+        const chartData = [['Hour', 'Caffeine Level', 'Vertical Line']];
+        result.forEach(item => {
+          const hour = parseInt(item[0], 10);  // 時間を取得
+          const caffeineLevel = item[1];
+          const verticalLine = hour === verticalLineHour ? maxValue : null; // 最高値までの線を描く
+          chartData.push([hour, caffeineLevel, verticalLine]);
+        });
+        
+        // 23時で始まり0から最大値までの線を描く
+        chartData.push([verticalLineHour, null, 0]);
+        chartData.push([verticalLineHour, null, maxValue]);
+        
+        this.chartData = chartData;
+        // console.log(jsonData);
       } catch (e) {
         console.error(e);
         // エラー時の処理
