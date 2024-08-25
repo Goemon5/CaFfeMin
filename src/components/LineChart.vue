@@ -31,7 +31,7 @@ export default {
       chartData: null,
       chartOptions: {
         title: 'caffein',
-         // 曲線を滑らかにする
+
         legend: { position: 'bottom' },
       },
       chartSettings: {
