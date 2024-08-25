@@ -34,7 +34,6 @@
       <div class="right-align">
         <button
           class="ui green button"
-          v-bind:disabled="isPostButtonDisabled"
           type="submit"
         >
           投稿
@@ -142,7 +141,7 @@ export default {
           throw new Error(errorMessage);
         }
 
-        this.$router.push({ name: "Home" });
+        this.$router.go(0);
         // 成功時の処理
         console.log(jsonData);
       } catch (e) {

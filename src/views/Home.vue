@@ -43,8 +43,7 @@
           </div>
         </form>
       </div>
-<InputSleep />
-      <SleepView />
+
       <h3 class="ui dividing header">カフェイン コレクション一覧</h3>
       <div class="ui three stackable cards">
         <template v-for="(diaries, index) in diary" :key="index">
@@ -70,8 +69,7 @@
 
 // import something from '@/components/something.vue';
 
-import InputSleep from "@/components/InputSleep.vue";
-import SleepView from "@/components/SleepView.vue";
+
 import LineChart from "@/components/LineChart.vue";
 import { baseUrl } from "@/assets/config.js";
 
@@ -82,8 +80,7 @@ export default {
 
   components: {
 
-    InputSleep,
-    SleepView,
+   
     LineChart,
 
     // 読み込んだコンポーネント名をここに記述する
