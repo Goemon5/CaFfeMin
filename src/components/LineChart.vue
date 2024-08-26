@@ -80,7 +80,7 @@ export default {
         const maxValue = Math.max(...result.map(item => item[1]));
         
         // グラフのデータ形式を整える
-        const chartData = [['Hour', 'Caffeine Level', 'Vertical Line']];
+        const chartData = [['Hour', 'Caffeine Level', 'Sleep Time']];
         result.forEach(item => {
           const hour = parseInt(item[0], 10);  // 時間を取得
           const caffeineLevel = item[1];

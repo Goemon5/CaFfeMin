@@ -9,6 +9,7 @@
     "lint": "eslint src --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "moment-timezone": "^0.5.45",
     "vue": "^3.4.27",
     "vue-google-charts": "^1.1.0",
     "vue-router": "^4.3.3"
