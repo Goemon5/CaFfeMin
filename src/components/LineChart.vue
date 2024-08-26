@@ -39,9 +39,9 @@ export default {
           title:"Caffeine"
         },
         series: {
-          0: { curveType: 'function', color: '#0000FF' },  // カフェインレベルのグラフ
+          0: { curveType: 'none', color: '#0000FF' },  // カフェインレベルのグラフ
           1: { type: 'line', color: '#FF0000', lineWidth: 2 }  // 垂直線としてのグラフ
-        }
+        },
       },
       chartSettings: {
         packages: ['corechart'],

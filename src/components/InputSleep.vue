@@ -125,7 +125,6 @@ export default {
       };
 
       try {
-        console.log(reqBody);
         const res = await fetch(baseUrl + "/sleep", {
           method: "POST",
           body: JSON.stringify(reqBody),
@@ -143,7 +142,6 @@ export default {
 
         this.$router.go(0);
         // 成功時の処理
-        console.log(jsonData);
       } catch (e) {
         console.error(e);
         console.log("このエラーはバックエンドとの連携で解消されます");

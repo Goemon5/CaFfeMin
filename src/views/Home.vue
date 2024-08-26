@@ -173,7 +173,6 @@ export default {
 
         // 成功時の処理
         //this.users = jsonData.users ?? [];
-        console.log(jsonData);
         
       } catch (e) {
         console.error(e);
@@ -233,7 +232,6 @@ generateTimeOptions() {
         drinkAmount: this.diary.drinkAmount,
         createdAt:timestamp
       };
-      console.log(reqBody);
       try {
         /* global fetch */
         const res = await fetch(baseUrl + "/diary", {
@@ -243,19 +241,17 @@ generateTimeOptions() {
 
         const text = await res.text();
         const jsonData = text ? JSON.parse(text) : {};
-        console.log(reqBody);
         // fetchではネットワークエラー以外のエラーはthrowされないため、明示的にthrowする
         if (!res.ok) {
           const errorMessage =
             jsonData.message ?? "エラーメッセージがありません";
           throw new Error(errorMessage);
         }
-        console.log(reqBody);
 
         this.successMsg = "記事が投稿されました！";
         this.diary.drinkType = "";
         this.diary.drinkAmount = "";
-        // window.location.reload();
+        window.location.reload();
       } catch (e) {
         console.error(e);
         this.errorMsg = e;

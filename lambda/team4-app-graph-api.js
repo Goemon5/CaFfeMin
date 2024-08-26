@@ -32,7 +32,6 @@ function convertTimestampTohours(unixTimestamp) {
     };
     const formatter = new Intl.DateTimeFormat('en-US', options);
     const tokyoTime = formatter.format(date);
-    // console.log(tokyoTime)
     
     // 24時間表記で返す
     return tokyoTime;
@@ -57,9 +56,7 @@ exports.handler = async (event, context) => {
   const tomorrowTimestamp = new Date(Date.now());
   tomorrowTimestamp.setDate(tomorrowTimestamp.getDate() + 1);
   const startAt = convertTimestampToDateTime(yesterdayTimestamp, 4);
-  console.log("startAt: " + startAt.toString());
   const endAt = convertTimestampToDateTime(tomorrowTimestamp, 0);
-  console.log("endAt: "+endAt);
 
   if (!userId) {
     response.statusCode = 400;
@@ -85,7 +82,6 @@ exports.handler = async (event, context) => {
   try {
     const result = await client.send(command);
     const diaries = result.Items;
-    console.log(diaries);
 
     if (!diaries || diaries.length === 0) {
       throw new Error("指定された期間に該当するデータが見つかりませんでした。");
@@ -112,59 +108,9 @@ exports.handler = async (event, context) => {
       let caffeine=0;
       const addTime=convertTimestampTohours(diary.createdAt);
       
-      // const options = {
-      //   timeZone: 'Asia/Tokyo', // タイムゾーンを指定
-      //   year: 'numeric',
-      //   month: '2-digit',
-      //   day: '2-digit',
-      //   hour: '2-digit',
-      //   minute: '2-digit',
-      //   second: '2-digit',
-      // };
-      
-      // const formatter = new Intl.DateTimeFormat('en-US', options);
-      // const formattedParts = formatter.formatToParts(diary.createdAt);
-      // console.log(formattedParts)
-
-      // let year, month, day, hour, minute, second;
-      
-      // formattedParts.forEach(({ type, value }) => {
-      //   switch (type) {
-      //     case 'year':
-      //       year = value;
-      //       break;
-      //     case 'month':
-      //       month = value;
-      //       break;
-      //     case 'day':
-      //       day = value;
-      //       break;
-      //     case 'hour':
-      //       hour = value;
-      //       break;
-      //     case 'minute':
-      //       minute = value;
-      //       break;
-      //     case 'second':
-      //       second = value;
-      //       break;
-      //   }
-      // });
-      
-      // // フォーマットされた日付を元に、Asia/TokyoタイムゾーンでのDateオブジェクトを作成
-      // const tokyoDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}+09:00`);
-      // // console.log(tokyoDate)
-      
-      // // UNIXタイムスタンプに変換（ミリ秒単位）
-      // const addTimeTimestamp = tokyoDate.getTime();
-      // console.log(addTimeTimestamp)
-      
-      // const yesterdayTimestamp=convertTimestampToDateTime(Date.now(), 0)
-      
       if(timeCount>=addTime){
         caffeine=diary.caffeineAmount;
       }
-      // console.log(addTimeTimestamp>yesterdayTimestamp)
       
       if(diary.createdAt>yesterdayTimestamp){
         const caffeineInBloodValue=calculateExpression(caffeine,timeCount,addTime)
@@ -183,8 +129,6 @@ exports.handler = async (event, context) => {
   for(let timeCount=4;timeCount<25;timeCount++){
     caffeineInBloodList.push([timeCount+"時",caffeineInBloodCal(timeCount)])
   }
-
-  // return caffeineInBloodList;
   
   response.body=JSON.stringify({result:caffeineInBloodList})
   

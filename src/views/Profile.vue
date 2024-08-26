@@ -130,7 +130,6 @@ export default {
         }
 
         // 成功時の処理
-        console.log(jsonData);
       } catch (e) {
         console.error(e);
         // エラー時の処理

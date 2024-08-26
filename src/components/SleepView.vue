@@ -73,7 +73,6 @@ export default {
             jsonData.message ?? "エラーメッセージがありません";
           throw new Error(errorMessage);
         }
-        console.log(jsonData);
         // 新しいデータを配列に追加
         if (Array.isArray(jsonData)) {
           this.sleeps = jsonData; // 複数のデータを一度に取得する場合
