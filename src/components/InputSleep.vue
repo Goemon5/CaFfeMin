@@ -3,13 +3,17 @@
     <form class="ui form" @submit.prevent="PostSleep">
       <div class="inline field">
         <label for="article-category">何時間寝ることができましたか？</label>
-        <input
-          v-model="sleep.sleepTime"
-          type="number"
-          name="article-content"
-          min="0"
-          required
-        />
+        <div class="ui left icon input">
+          <i class="clock icon"></i>
+          <input
+            v-model="sleep.sleepTime"
+            placeholder="時間(h)"
+            type="number"
+            name="article-content"
+            min="0"
+            required
+          />
+        </div>
 
       </div>
 
@@ -33,7 +37,7 @@
 
       <div class="right-align">
         <button
-          class="ui green button"
+          class="ui orange button"
           type="submit"
         >
           投稿

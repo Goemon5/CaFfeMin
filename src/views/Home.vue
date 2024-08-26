@@ -23,13 +23,16 @@
 
           <label>カフェイン飲料の摂取量:</label>
           <div class="field">
-            <input
-              v-model="diary.drinkAmount"
-              type="number"
-              name="intake"
-              placeholder="摂取量(ml)"
-              style="width: 50%"
-            />
+            <div class="ui left icon input">
+              <i class="coffee icon"></i>
+              <input
+                v-model="diary.drinkAmount"
+                type="number"
+                name="intake"
+                placeholder="摂取量(ml)"
+                style="width: 50%"
+              />
+            </div>
           </div>
            <div class="inline field">
 
@@ -41,7 +44,7 @@
 
           <div class="right-align">
             <button
-              class="ui green button"
+              class="ui orange button"
               v-bind:disabled="isPostButtonDisabled"
               type="submit"
             >

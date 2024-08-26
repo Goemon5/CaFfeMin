@@ -1,5 +1,5 @@
 <template>
-  <div class="ui secondary pointing green inverted massive menu">
+  <div class="ui secondary pointing brown inverted massive menu">
     <router-link active-class="active" class="item" exact to="/"
       >Home</router-link
     >
