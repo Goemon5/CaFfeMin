@@ -31,6 +31,13 @@
               style="width: 50%"
             />
           </div>
+           <div class="inline field">
+
+            <label for="article-category">何時に飲みましたか？</label>
+            <input v-model="diary.createdAt" type="datetime-local" required>
+          
+      
+      </div>
 
           <div class="right-align">
             <button
@@ -107,13 +114,15 @@ export default {
         nickname: null,
         age: null,
       },
-      diary: [],
+      diary:[],
+      
       diaries: {
         drinkType: null,
         drinkAmount: null,
         caffeineAmount: null,
         createdAt: null,
       },
+      
 
       articles: [],
       iam: null,
@@ -173,30 +182,56 @@ export default {
     }, // 記事一覧を取得する
 
   methods: {
+  
     // Vue.jsで使う関数はここで記述する
     // isMyArticle(id) {}, // 自分の記事かどうかを判定する
-
+generateTimeOptions() {
+      const options = [];
+      for (let hour = 0; hour < 24; hour++) {
+        for (let minute = 0; minute < 60; minute += 10) {
+          const formattedTime = this.formatTime(hour, minute);
+          options.push(formattedTime);
+        }
+      }
+      return options;
+    },
+    formatTime(hour, minute) {
+      const formattedHour = String(hour).padStart(2, "0");
+      const formattedMinute = String(minute).padStart(2, "0");
+      return `${formattedHour}:${formattedMinute}`;
+    },
     // 記事一覧を取得する
     formatTimestamps(timestamp) {
       const date = new Date(timestamp);
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, "0"); // 月は0から始まるので+1する
       const day = date.getDate().toString().padStart(2, "0");
-      return `${year}年${month}月${day}日`;
-    },
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      return `${year}年${month}月${day}日 ${hours}時${minutes}分`;
+  },
+
     
 
 
     async postArticle() {
+    const date = new Date(this.diary.createdAt);
+  const timestamp = date.getTime();
       if (this.isCallingApi) {
         return;
       }
       this.isCallingApi = true;
+      const [hour, minute] = this.diary.createdAt.split(":").map(Number);
+      
+
+      // Dateオブジェクトをタイムスタンプに変換する
+      
 
       const reqBody = {
         userId: this.user.userId,
         drinkType: this.diary.drinkType,
         drinkAmount: this.diary.drinkAmount,
+        createdAt:timestamp
       };
       console.log(reqBody);
       try {
@@ -208,7 +243,7 @@ export default {
 
         const text = await res.text();
         const jsonData = text ? JSON.parse(text) : {};
-
+console.log(reqBody);
         // fetchではネットワークエラー以外のエラーはthrowされないため、明示的にthrowする
         if (!res.ok) {
           const errorMessage =

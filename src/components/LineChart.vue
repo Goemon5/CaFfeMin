@@ -30,8 +30,7 @@ export default {
       
       chartData: null,
       chartOptions: {
-        title: 'Caffeine Level Over Time',
-         // 曲線を滑らかにする
+        title: '今日の血中カフェイン濃度',
         legend: { position: 'bottom' },
         hAxis:{
           title:"Hour"
