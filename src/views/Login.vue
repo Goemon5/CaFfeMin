@@ -42,7 +42,7 @@
 
           <span>{{ errorMessage }}</span>
 
-          <button class="ui fluid green huge button" type="submit">
+          <button class="ui fluid orange huge button" type="submit">
             {{ submitText }}
           </button>
         </form>
